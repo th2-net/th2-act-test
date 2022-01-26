@@ -1,0 +1,15 @@
+FROM gradle:6.6-jdk11 AS build
+ARG nexus_url
+ARG nexus_user
+ARG nexus_password
+
+COPY ./ .
+RUN gradle --no-daemon clean build dockerPrepare \
+    -Pnexus_url=${nexus_url} \
+    -Pnexus_user=${nexus_user} \
+    -Pnexus_password=${nexus_password}
+
+FROM adoptopenjdk/openjdk11:alpine
+WORKDIR /home
+COPY --from=build /home/gradle/build/docker .
+ENTRYPOINT ["/home/service/bin/service"]
