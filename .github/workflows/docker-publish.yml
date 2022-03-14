@@ -22,8 +22,8 @@ jobs:
     - uses: docker/login-action@v1
       with:
         registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.CR_PAT }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - run: echo "::set-output name=REPOSITORY_NAME::$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')"
       id: meta
     - name: Read version from gradle.properties
@@ -32,13 +32,6 @@ jobs:
       with:
         path: ./gradle.properties
         property: release_version
-    - name: Generate .proto description json
-      id: proto_json
-      run: |
-        gradle generateServiceDescriptions
-        echo "::set-output name=DESCRIPTION_JSON::$(cat serviceProtoDescription)"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
@@ -47,4 +40,3 @@ jobs:
         tags: ghcr.io/${{ github.repository }}:${{ steps.read_property.outputs.value }}
         labels: |
           com.exactpro.th2.${{ steps.meta.outputs.REPOSITORY_NAME }}=${{ steps.read_property.outputs.value }}
-          protobuf-description-base64=${{ steps.proto_json.outputs.DESCRIPTION_JSON }}
