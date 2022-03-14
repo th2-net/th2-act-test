@@ -22,11 +22,16 @@ jobs:
     - run: echo "::set-output name=REPOSITORY_NAME::$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')"
       id: meta
     - name: Read version from gradle.properties
-      id: read_property
+      id: release_version
       uses: christian-draeger/read-properties@1.0.1
       with:
         path: ./gradle.properties
         property: release_version
+<<<<<<< Updated upstream
+=======
+    - name: Echo release version
+      run: echo ghcr.io/${{ github.repository }}:${{ steps.release_version.outputs.value }}
+>>>>>>> Stashed changes
     - name: log in to github container registry
       uses: docker/login-action@v1
       with:
@@ -38,6 +43,12 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
+<<<<<<< Updated upstream
         build-args: |
           tags: ghcr.io/${{ github.repository }}:${{ steps.version.outputs.prop }}
           labels: com.exactpro.th2.${{ steps.repo.outputs.REPOSITORY_NAME }}=${{ steps.version.outputs.prop }}
+=======
+        tags: ghcr.io/${{ github.repository }}:${{ steps.release_version.outputs.value }}
+        labels: com.exactpro.th2.${{ steps.repo.outputs.REPOSITORY_NAME }}=${{ steps.version.outputs.prop }}
+
+>>>>>>> Stashed changes
