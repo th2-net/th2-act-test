@@ -88,7 +88,7 @@ jar {
 dependencies {
     api platform('com.exactpro.th2:bom:3.0.0')
 
-    implementation 'com.exactpro.th2:common:3.26.4'
+    implementation 'com.exactpro.th2:common:3.39.1'
     implementation 'com.exactpro.th2:grpc-act-template:3.4.0'
     implementation 'com.exactpro.th2:grpc-check1:3.4.2'
 
