@@ -42,4 +42,5 @@ jobs:
         push: true
         tags: ghcr.io/${{ github.repository }}:${{ steps.release_version.outputs.value }}
         labels: com.exactpro.th2.${{ steps.repo.outputs.REPOSITORY_NAME }}=${{ steps.version.outputs.prop }}
-
+  owasp-scan:
+    uses: th2-net/.github/.github/workflows/owasp-gradle-scan.yml@main

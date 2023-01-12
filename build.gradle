@@ -16,6 +16,11 @@ plugins {
     id 'java'
     id 'java-library'
     id 'application'
+    id "org.owasp.dependencycheck" version "7.4.4"
+}
+
+dependencyCheck {
+    formats=['SARIF']
 }
 
 apply plugin: 'java'
